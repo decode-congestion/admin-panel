@@ -7,34 +7,11 @@ import {
   Redirect
 } from "react-router-dom";
 
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-import { Button } from 'antd'
-
-const AdminMap = () => {
-  const [lat, setLat] = useState(51.505)
-  const [lng, setLng] = useState(-0.09)
-  const [zoom, setZoom] = useState(13)
-
-  const position = [lat, lng]
-  return (
-    <Map style={{
-      height: '100vh',
-      width: '80vw'
-    }} center={position} zoom={zoom}>
-      <TileLayer
-        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Marker position={position}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
-    </Map>
-  )
-}
-
-
+import BusesScreen from './screens/Buses'
+import BusScreen from './screens/Bus'
+import StopsScreen from './screens/Stops'
+import StopScreen from './screens/Stop'
+import TasksScreen from './screens/Tasks'
 
 function App() {
   return (
@@ -48,20 +25,19 @@ function App() {
             <Redirect to="/buses"></Redirect>
           </Route>
           <Route exact path="/buses">
-            <Button>Hello world</Button>
-            <AdminMap />
+            <BusesScreen />
           </Route>
           <Route exact path="/buses/:id">
-            <h1>Specific bus</h1>
+            <BusScreen />
           </Route>
           <Route exact path="/tasks">
-            <h1>Tasks</h1>
+            <TasksScreen />
           </Route>
           <Route exact path="/stops">
-            <h1>All stops</h1>
+            <StopsScreen />
           </Route>
           <Route exact path="/stops/:id">
-            <h1>Single stop</h1>
+            <StopScreen />
           </Route>
         </Switch>
 
