@@ -4,7 +4,7 @@ import { Switch } from 'antd'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-const AdminMap = () => {
+const AdminMap = ({ showBuses }) => {
   const [lat, setLat] = useState(49.246292)
   const [lng, setLng] = useState(-123.116226)
   const [zoom, setZoom] = useState(13)
@@ -18,6 +18,7 @@ const AdminMap = () => {
       })
     }
 
+    fetchBusData()
     const int = setInterval(fetchBusData, 4000)
 
     return (() => {
@@ -37,7 +38,7 @@ const AdminMap = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {
-        buses.map(b => (
+        showBuses && buses.map(b => (
           <Marker key={b.vehicle_no} position={[b.lat, b.long]}>
             <Popup>
               <Link to={`/buses/${b.vehicle_no}`}><b>Vehicle: {b.vehicle_no}</b></Link>
@@ -72,6 +73,8 @@ const Screen = () => {
             <Switch 
             checkedChildren="Buses" unCheckedChildren="Buses"
             defaultChecked onChange={onChange} />
+            <h2><Link to={`/tasks`}><b>Tasks</b></Link></h2>
+
           </div>
         </div>
         <AdminMap showBuses={showBuses}/>
