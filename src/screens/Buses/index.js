@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-import { Button } from 'antd'
+import { Switch } from 'antd'
 
 const AdminMap = () => {
   const [lat, setLat] = useState(51.505)
@@ -27,11 +27,33 @@ const AdminMap = () => {
 }
 
 const Screen = () => {
-    return (
-        <div>
-            <AdminMap />
+  const [showBuses, setShowBuses] = useState(true)
+  
+  const onChange = (checked) => {
+    setShowBuses(checked)
+  }
+
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'row'
+    }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          width: '20vw',
+          padding: '50px'
+        }}>
+          <div>
+            <Switch 
+            checkedChildren="Buses" unCheckedChildren="Buses"
+            defaultChecked onChange={onChange} />
+          </div>
         </div>
-    )
+        <AdminMap showBuses={showBuses}/>
+    </div>
+  )
 }
 
 export default Screen
