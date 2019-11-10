@@ -1,13 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Switch } from 'antd'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 const AdminMap = () => {
-  const [lat, setLat] = useState(51.505)
-  const [lng, setLng] = useState(-0.09)
+  const [lat, setLat] = useState(49.246292)
+  const [lng, setLng] = useState(-123.116226)
   const [zoom, setZoom] = useState(13)
+  const [buses, setBuses] = useState([])
+
+  useEffect(() => {
+    const fetchBusData = () => {
+      axios.get('/api/vehicles')
+      .then(res => {
+        setBuses(res.data)
+      })
+    }
+
+    const int = setInterval(fetchBusData, 4000)
+
+    return (() => {
+      clearInterval(int)
+    })
+  }, [])
 
   const position = [lat, lng]
+
   return (
     <Map style={{
       height: '100vh',
@@ -17,11 +36,15 @@ const AdminMap = () => {
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
+      {
+        buses.map(b => (
+          <Marker key={b.vehicle_no} position={[b.lat, b.long]}>
+            <Popup>
+              <Link to={`/buses/${b.vehicle_no}`}><b>Vehicle: {b.vehicle_no}</b></Link>
+            </Popup>
+          </Marker>
+        ))
+      }
     </Map>
   )
 }
